@@ -17,7 +17,7 @@
 		<div class="product-detail">
 			<div class="row">
 				<div class="col-12 col-lg-8">
-					<img src="/images/<%= product.image %> " alt="product image" class="product-detail-img">
+					<img src="/images/products/<%= product.image %> " alt="product image" class="product-detail-img">
 					<p class="product-detail-description">
 						<%= product.description %> 
 					</p>
@@ -49,7 +49,7 @@
 						<a href="#" class="buy-now-button">COMPRAR AHORA</a>
 						<hr>
 
-						<a href="/products/edit/<%=product.id%> " class="action-button edit">EDITAR PRODUCTO</a>
+						<a href="/products/edit/<%=product.id%>" class="action-button edit">EDITAR PRODUCTO</a>
 						<form action="/products/<%=product.id%>?_method=DELETE" method="POST" style="display: inline-flex">
 							<button type="submit" class="action-button delete">ELIMINAR</button>
 						</form>

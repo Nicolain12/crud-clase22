@@ -26,49 +26,55 @@ const controller = {
 	
 	// Create -  Method to store
 	store: (req, res) => {
-		products.push( {
+		let newProduct = {
 			id: products.length + 1,
 			name: req.body.name,
 			price: parseInt(req.body.price),
 			discount: parseInt(req.body.discount),
 			category: req.body.category,
 			description: req.body.description,
-			image: req.file.filename, // Contiene el nombre dado por librería Multer al archivo que subió el cliente
-		 });
+			image: null
+		}
+
+		products.push(newProduct)
    
-		 fs.writeFileSync(productsFilePath, JSON.stringify(products));
+		 fs.writeFileSync(productsFilePath, JSON.stringify(products))
 		 
-		 res.render("products", {products: products});
+		 res.redirect("/products")
 	},
 
 	// Update - Form to edit
 	edit: (req, res) => {
-		const product = products.find( element => element.id == req.params.id);
-		res.render("product-edit-form", {product: product});	
+		let product = products.find( element => element.id == req.params.id)
+		res.render("product-edit-form", {product: product})
 	},
 	// Update - Method to update
 	update: (req, res) => {
-		let product = products.find( element => element.id == req.params.id);
-        	product = {
-				  name:  req.body.name,
-				  price:  req.body.price,
-				  discount:  req.body.discount,
-				  category:  req.body.category,
-				  description:  req.body.description,
-				  image:  req.body.image
-        	}
-			fs.writeFileSync(productsFilePath, JSON.stringify(product));
-		 
-			res.redirect("products", {products: products});
+		let parametro = req.params.id		
+		let newInfo = {
+			id: parametro,
+			name: req.body.name,
+			price: parseInt(req.body.price),
+			discount: parseInt(req.body.discount),
+			category: req.body.category,
+			description: req.body.description,
+			image: null
+		}
+		products.map((element, index) =>{
+			if(element.id == parametro){
+				products[index] = newInfo
+			}
+		})
+		fs.writeFileSync(productsFilePath, JSON.stringify(products))
+		res.redirect('/products')
 	},
 
 	// Delete - Delete one product from DB
 	destroy: (req, res) => {
-		let parametro = req.params.id
-		let dataFilter = products.filter(element => (element.id != parametro))
+		let dataFilter = products.filter(element => (element.id != req.params.id))
 		let newDataBase = JSON.stringify(dataFilter)
 		fs.writeFileSync(productsFilePath, newDataBase)
-		res.redirect('products',{products: products})
+		res.redirect('/products')
 	}
 
 }
